@@ -6,9 +6,6 @@ set -e
 sudo yum -y update
 
 
-
-
-
 echo 'Installing npm and nodejs packages with yum and epel repository'
 sudo yum -y install nodejs npm --enablerepo=epel
 
@@ -27,34 +24,13 @@ sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm
 sudo yum -y update
 sudo yum -y install mysql-server
 
-echo 'remove ruby20 with yum'
-
-sudo yum -y remove ruby ruby20
-echo 'remove ruby20 with yum'
-# 1. Install the Software Collections tools:
-sudo yum -y install scl-utils
-
-# 2. Download a package with repository for your system.
-#  (See the Yum Repositories section below. You can use `wget URL`.)
-wget https://www.softwarecollections.org/en/scls/rhscl/rh-ruby22/epel-7-x86_64/download/rhscl-rh-ruby22-epel-7-x86_64.noarch.rpm
-
-# 3. Install the repo package:
-echo 'sudo yum -y install rhscl-rh-ruby22-*.noarch.rpm'
-sudo yum -y install rhscl-rh-ruby22-*.noarch.rpm
-
-# 4. Install the collection:
-sudo yum -y install rh-ruby22
-
-# 5. Start using software collections:
-# scl enable rh-ruby22 bash
-
 sudo echo 'Development Environment Bootstrap Script'
 sudo yum -y groups install "Development Tools" "Development Libraries"
 sudo yum --enablerepo=epel -y install gdbm-devel libdb4-devel libffi-devel libyaml libyaml-devel ncurses-devel openssl-devel readline-devel tcl-devel
 
 
-# echo 'Installing bunder packages with gem'
-# gem install bundler
+echo 'Installing bunder packages with gem'
+gem install bundler
 
 echo 'setting up reverse proxy for nginx'
 sudo tee /etc/nginx/conf.d/skyhopper.conf <<EOF >/dev/null
@@ -92,4 +68,15 @@ ln -s /vagrant /home/vagrant/workspace
 echo 'Cleaning up....'
 rm libunwind-1.1-3.el7.x86_64.rpm
 rm mysql-community-release-el7-5.noarch.rpm
-rm rhscl-rh-ruby22-epel-7-x86_64.noarch.rpm
+
+echo 'setting up skyhopper'
+cd workspace/skyhopper
+bundle install --path vendor/bundle
+bower install
+
+echo 'installing gulp'
+sudo npm i -g gulp
+cd frontend/
+npm i
+gulp tsd
+gulp ts
