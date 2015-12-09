@@ -36,6 +36,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       v.name = "delta"
     end
 
+    # config.vm.synced_folder "../data", "/vagrant_data"
+
+    config.vm.provision "shell", path: "environment-bootstrap/bootstrap-vagrant.sh"
+
     x.vm.provider :aws do |aws, override|
       aws.access_key_id = ENV['AWS_KEY']
       aws.secret_access_key = ENV['AWS_SECRET']
