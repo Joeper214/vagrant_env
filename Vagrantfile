@@ -1,41 +1,24 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# Vagrant on AWS Example
-# Brian Cantoni
-
-# This sample sets up 1 VM ('delta') with only Java installed.
-
-# Adjustable settings
-
-
-# Configure VM server
 VAGRANTFILE_API_VERSION = "2"
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.define :delta do |x|
-    x.vm.box = "hashicorp/precise64"
-    x.vm.hostname = "skyhopper-server"
-    x.vm.provision "shell", path: "environment-bootstrap/bootstrap-vagrant.sh"
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "centos7"
+  config.vm.boot_timeout = 0
+  config.vm.network :forwarded_port, guest: 8080, host: 8080
+  config.vm.network :forwarded_port, guest: 8081, host: 8081
+  config.vm.network :forwarded_port, guest: 8082, host: 8083
+  config.vm.network :forwarded_port, guest: 8000, host: 8000
 
-    x.vm.provider :virtualbox do |v|
-      v.name = "skyhopper-server"
-    end
+  # config.vm.synced_folder "../data", "/vagrant_data"
 
-    # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.provision "shell", path: "environment-bootstrap/bootstrap-vagrant.sh"
 
-    x.vm.provider :aws do |aws, override|
-      aws.access_key_id = ENV['AWS_KEY']
-      aws.secret_access_key = ENV['AWS_SECRET']
-      aws.keypair_name = ENV['AWS_KEYNAME']
-      aws.ami = "ami-383c1956"
-      aws.region = "ap-northeast-1"
-      aws.instance_type = "t2.small"
-      aws.tags = {
-        'Name' => 'skyhopper-server',
-      }
-      override.vm.box = "dummy"
-      override.ssh.username = "ec2-user"
-      override.ssh.private_key_path = ENV['AWS_KEYPATH']
-    end
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
   end
 end
