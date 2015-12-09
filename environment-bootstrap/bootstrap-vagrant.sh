@@ -88,3 +88,8 @@ sudo systemctl start nginx
 
 # Link workspace
 ln -s /vagrant /home/vagrant/workspace
+
+echo 'Cleaning up....'
+rm libunwind-1.1-3.el7.x86_64.rpm
+rm mysql-community-release-el7-5.noarch.rpm
+rm rhscl-rh-ruby22-epel-7-x86_64.noarch.rpm
