@@ -5,6 +5,9 @@ set -e
 #Script to bootstrap an App Engine development environment.
 sudo yum -y update
 
+echo 'adding epel repo'
+wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+rpm -ivh epel-release-7-5.noarch.rpm
 
 echo 'Installing npm and nodejs packages with yum and epel repository'
 sudo yum -y install nodejs npm --enablerepo=epel
@@ -68,6 +71,7 @@ ln -s /vagrant /home/vagrant/workspace
 echo 'Cleaning up....'
 rm libunwind-1.1-3.el7.x86_64.rpm
 rm mysql-community-release-el7-5.noarch.rpm
+rm epel-release-7-5.noarch.rpm
 
 echo 'setting up skyhopper'
 cd workspace/skyhopper
