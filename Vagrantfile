@@ -13,13 +13,15 @@ Vagrant.configure("2") do |config|
     aws.ami = "ami-374db956"
     aws.instance_type = "t2.small"
 
+    aws.tags = {'Name' => 'SkyHopper Server Vagrant'}
 
     override.ssh.username = "ec2-user"
     override.ssh.private_key_path = "#{ENV['private_key_path']}" # Path to your keypair file with .pem extention
   end
 
   config.vm.synced_folder ".", "/app", type: "rsync",
-  rsync__exclude: [".git/", "environment-bootstrap/", "LICENSE", "README.md"]
+  rsync__exclude: [".git/", "vagrant_env/"]
 
-  config.vm.provision "shell", path: "environment-bootstrap/bootstrap-vagrant.sh"
+  config.vm.provision "shell", path: "vagrant_env/bootstrap-vagrant.sh"
+
 end
