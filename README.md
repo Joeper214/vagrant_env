@@ -1,6 +1,19 @@
 # vagrant_env
 Development Environment for Skyhopper using Vagrant.
 
+Requirements:
+ 1. An AWS account created with the following credentials:
+  - Access Key ID
+  - Scret Access Key
+  - Keypair File
+
+Setting Environment Variables:
+=======
+  `export access_key_id="your access key from aws"`
+  `export secret_access_key_id="your secret key from aws"`
+  `export keypair_name="your keypair file name"`
+  `export private_key_path="your keypair file path .pem"`
+
 Vagrant
 =======
 

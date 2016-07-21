@@ -94,10 +94,4 @@ sudo service mysqld start
 sudo chkconfig nginx on
 sudo service nginx start
 
-echo 'Downloading/Cloning SkyHopper from GitHub'
-cd /app
-git clone https://github.com/skyarch-networks/skyhopper.git
-echo 'Change ower to ec2-user'
-sudo chown -R ec2-user.ec2-user skyhopper
-
 echo "Done"
