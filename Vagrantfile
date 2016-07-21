@@ -1,24 +1,25 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure("2") do |config|
+  config.vm.box = "dummy"
 
-Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "boltmade/centos-7.1-ruby22"
-  config.vm.boot_timeout = 0
-  config.vm.network :forwarded_port, guest: 8080, host: 8080
-  config.vm.network :forwarded_port, guest: 8081, host: 8081
-  config.vm.network :forwarded_port, guest: 8082, host: 8083
-  config.vm.network :forwarded_port, guest: 8000, host: 8000
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = "#{ENV['access_key_id']}" # Your access key id from AWS
+    aws.secret_access_key = "#{ENV['secret_access_key']}" # Your secret_access_key id from AWS
+    aws.keypair_name = "#{ENV['keypair_name']}" # Your keypair_name id from AWS
+    aws.region = "ap-northeast-1"
 
-  # config.vm.synced_folder "../data", "/vagrant_data"
+    aws.ami = "ami-374db956"
+    aws.instance_type = "t2.small"
+
+
+    override.ssh.username = "ec2-user"
+    override.ssh.private_key_path = "#{ENV['private_key_path']}" # Path to your keypair file with .pem extention
+  end
+
+  config.vm.synced_folder ".", "/app", type: "rsync",
+  rsync__exclude: [".git/", "environment-bootstrap/", "LICENSE", "README.md"]
 
   config.vm.provision "shell", path: "environment-bootstrap/bootstrap-vagrant.sh"
-
-  config.vm.provider "virtualbox" do |v|
-    v.memory = 1024
-    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  end
 end
