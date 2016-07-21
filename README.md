@@ -1,4 +1,4 @@
-# vagrant_env
+# vagrant_env [BETA/NOT YET WORKING]
 Development Environment for Skyhopper using Vagrant.
 
 
