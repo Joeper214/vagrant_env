@@ -19,9 +19,6 @@ Vagrant.configure("2") do |config|
     override.ssh.private_key_path = "#{ENV['private_key_path']}" # Path to your keypair file with .pem extention
   end
 
-  config.vm.synced_folder ".", "/app", type: "rsync",
-  rsync__exclude: [".git/", "vagrant_env/"]
-
   config.vm.provision "shell", path: "vagrant_env/bootstrap-vagrant.sh"
 
 end

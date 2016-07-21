@@ -1,11 +1,7 @@
 # vagrant_env
 Development Environment for Skyhopper using Vagrant.
 
-Requirements:
- 1. An AWS account created with the following credentials:
-  - Access Key ID
-  - Scret Access Key
-  - Keypair File
+
 
 Setting Environment Variables:
 =======
@@ -19,7 +15,10 @@ Vagrant
 
 There is a special bootstrap script for vagrant usage. To get started with vagrant:
 
-  1. Install VirtualBox (5.1 as of now) from https://www.virtualbox.org/wiki/Downloads
+  1. [Requirement] An AWS account created with the following credentials:
+    - Access Key ID
+    - Scret Access Key
+    - Keypair Files
   2. Install vagrant from http://www.vagrantup.com/downloads.html
   3. Install vagrant-aws plugin
 
